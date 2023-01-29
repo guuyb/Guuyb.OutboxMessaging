@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guuyb.OutboxMessaging.Data.Core.Test", "Guuyb.OutboxMessaging.Data.Core.Test\Guuyb.OutboxMessaging.Data.Core.Test.csproj", "{886840F5-5337-4DF2-B601-ABD456893257}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guuyb.OutboxMessaging.Data", "Guuyb.OutboxMessaging.Data\Guuyb.OutboxMessaging.Data.csproj", "{82C7FCBC-6188-460B-9FAD-2009F458E40E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guuyb.OutboxMessaging.Worker", "Guuyb.OutboxMessaging.Worker\Guuyb.OutboxMessaging.Worker.csproj", "{7DEA2CFC-F2C7-4536-836B-15B28009C302}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guuyb.OutboxMessaging.Data.Migrations.PostgreSql", "Guuyb.OutboxMessaging.Data.Migrations.PostgreSql\Guuyb.OutboxMessaging.Data.Migrations.PostgreSql.csproj", "{122A9B84-6DF2-4B84-ACB6-D83AC9C81442}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guuyb.OutboxMessaging.Data.Migrations.MicrosoftSql", "Guuyb.OutboxMessaging.Data.Migrations.MicrosoftSql\Guuyb.OutboxMessaging.Data.Migrations.MicrosoftSql.csproj", "{96532DE0-67F4-4F99-BFBE-FC8B3BAB1C45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guuyb.OutboxMessaging.Data.Migrations.PostgreSql.Ef6", "Guuyb.OutboxMessaging.Data.Migrations.PostgreSql.Ef6\Guuyb.OutboxMessaging.Data.Migrations.PostgreSql.Ef6.csproj", "{18170282-3E3F-4539-B441-3A314FDC9ACD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{800C6E3F-EC03-4B03-9F35-FD0D5807874E}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{886840F5-5337-4DF2-B601-ABD456893257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{886840F5-5337-4DF2-B601-ABD456893257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{886840F5-5337-4DF2-B601-ABD456893257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{886840F5-5337-4DF2-B601-ABD456893257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82C7FCBC-6188-460B-9FAD-2009F458E40E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82C7FCBC-6188-460B-9FAD-2009F458E40E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82C7FCBC-6188-460B-9FAD-2009F458E40E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82C7FCBC-6188-460B-9FAD-2009F458E40E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DEA2CFC-F2C7-4536-836B-15B28009C302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DEA2CFC-F2C7-4536-836B-15B28009C302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DEA2CFC-F2C7-4536-836B-15B28009C302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DEA2CFC-F2C7-4536-836B-15B28009C302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{122A9B84-6DF2-4B84-ACB6-D83AC9C81442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{122A9B84-6DF2-4B84-ACB6-D83AC9C81442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{122A9B84-6DF2-4B84-ACB6-D83AC9C81442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{122A9B84-6DF2-4B84-ACB6-D83AC9C81442}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96532DE0-67F4-4F99-BFBE-FC8B3BAB1C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96532DE0-67F4-4F99-BFBE-FC8B3BAB1C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96532DE0-67F4-4F99-BFBE-FC8B3BAB1C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96532DE0-67F4-4F99-BFBE-FC8B3BAB1C45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18170282-3E3F-4539-B441-3A314FDC9ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18170282-3E3F-4539-B441-3A314FDC9ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18170282-3E3F-4539-B441-3A314FDC9ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18170282-3E3F-4539-B441-3A314FDC9ACD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {96D98ADA-EF95-4D6F-A0D1-128DAA092AD1}
+	EndGlobalSection
+EndGlobal
