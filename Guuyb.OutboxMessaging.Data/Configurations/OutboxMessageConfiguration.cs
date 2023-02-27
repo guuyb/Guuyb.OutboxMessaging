@@ -6,8 +6,10 @@ using System.Linq.Expressions;
 
 namespace Guuyb.OutboxMessaging.Data.Configurations
 {
-    internal static class OutboxMessageConfiguration
+    public class RelationlessOutboxMessageConfiguration<TOutboxMessage> : IEntityTypeConfiguration<TOutboxMessage>
+        where TOutboxMessage : class, IOutboxMessage
     {
+        private readonly string _tableName;
         // оптимистичный вариант для RabbitMq, когда наименование состоит из латинских символов
         private const int OPTIMISTIC_QUEUE_NAME_MAX_LENGTH = 255;
 
@@ -15,12 +17,6 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
         public const int TARGET_QUEUE_NAME_MAX_LENGTH = OPTIMISTIC_QUEUE_NAME_MAX_LENGTH;
         public const int ROUTING_KEY_MAX_LENGTH = OPTIMISTIC_QUEUE_NAME_MAX_LENGTH;
         public const int PARENT_ACTIVITY_ID_MAX_LENGTH = 2048;
-    }
-
-    public class RelationlessOutboxMessageConfiguration<TOutboxMessage> : IEntityTypeConfiguration<TOutboxMessage>
-        where TOutboxMessage : class, IOutboxMessage
-    {
-        private readonly string _tableName;
 
         public RelationlessOutboxMessageConfiguration(string tableName)
         {
@@ -32,6 +28,7 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
             builder.ToTable(_tableName);
 
             builder.HasKey(p => p.Id);
+            builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
             builder.Property(p => p.CreatedAt)
                 .HasConversion(
@@ -51,19 +48,19 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
 
             builder.Property(p => p.PayloadTypeName)
                 .IsRequired()
-                .HasMaxLength(OutboxMessageConfiguration.PAYLOAD_TYPE_NAME_MAX_LENGTH);
+                .HasMaxLength(PAYLOAD_TYPE_NAME_MAX_LENGTH);
 
             builder.Property(p => p.TargetQueueName)
                 .IsRequired(false)
-                .HasMaxLength(OutboxMessageConfiguration.TARGET_QUEUE_NAME_MAX_LENGTH);
+                .HasMaxLength(TARGET_QUEUE_NAME_MAX_LENGTH);
 
             builder.Property(p => p.RoutingKey)
                 .IsRequired(false)
-                .HasMaxLength(OutboxMessageConfiguration.ROUTING_KEY_MAX_LENGTH);
+                .HasMaxLength(ROUTING_KEY_MAX_LENGTH);
 
             builder.Property(p => p.ParentActivityId)
                 .IsRequired(false)
-                .HasMaxLength(OutboxMessageConfiguration.PARENT_ACTIVITY_ID_MAX_LENGTH);
+                .HasMaxLength(PARENT_ACTIVITY_ID_MAX_LENGTH);
 
             builder.Property(p => p.DelayUntil)
                 .HasConversion(

@@ -28,17 +28,18 @@ namespace Guuyb.OutboxMessaging.Data.Migrations.PostgreSql
 
     internal class AnotherOutboxMessage : IOutboxMessage
     {
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedAt { get; set; }
         public int Id { get; set; }
         public byte[] Payload { get; set; }
         public string PayloadTypeName { get; set; }
         public int PublishAttemptCount { get; set; }
-        public DateTime? PublishDate { get; set; }
+        public DateTime? PublishedAt { get; set; }
         public OutboxMessageStateEnum StateId { get; set; }
         public string StringifiedPayload { get; set; }
         public string TargetQueueName { get; set; }
         public string RoutingKey { get; set; }
         public string ParentActivityId { get; set; }
+        public DateTime? DelayUntil { get; set; }
     }
 
     internal class AnotherOutboxMessageState : IOutboxMessageState

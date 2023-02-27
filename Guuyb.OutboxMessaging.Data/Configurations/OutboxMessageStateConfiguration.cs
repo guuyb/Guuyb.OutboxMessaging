@@ -6,18 +6,12 @@ using System.Linq;
 
 namespace Guuyb.OutboxMessaging.Data.Configurations
 {
-    public partial class OutboxMessageStateConfiguration
-    {
-        public const int CODE_MAX_LENGTH = 50;
-
-        private OutboxMessageStateConfiguration()
-        { }
-    }
-
     public class OutboxMessageStateConfiguration<TOutboxMessageState> : IEntityTypeConfiguration<TOutboxMessageState>
         where TOutboxMessageState : class, IOutboxMessageState, new()
     {
         private readonly string _tableName;
+
+        public const int CODE_MAX_LENGTH = 50;
 
         public OutboxMessageStateConfiguration(string tableName)
         {
@@ -37,7 +31,7 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
             builder
                 .Property(p => p.Code)
                 .IsRequired()
-                .HasMaxLength(OutboxMessageStateConfiguration.CODE_MAX_LENGTH);
+                .HasMaxLength(CODE_MAX_LENGTH);
 
             builder.HasData(
                 Enum.GetValues(typeof(OutboxMessageStateEnum))
