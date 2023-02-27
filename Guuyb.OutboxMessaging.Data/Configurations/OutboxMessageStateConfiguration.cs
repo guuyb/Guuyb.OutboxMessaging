@@ -1,15 +1,8 @@
-﻿#if NET6_0 || NETCOREAPP3_1
+﻿using Guuyb.OutboxMessaging.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Linq;
-#endif
-
-#if NET48
-using System.Data.Entity.ModelConfiguration;
-#endif
-
-using Guuyb.OutboxMessaging.Data.Models;
 
 namespace Guuyb.OutboxMessaging.Data.Configurations
 {
@@ -21,7 +14,6 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
         { }
     }
 
-#if NET6_0 || NETCOREAPP3_1
     public class OutboxMessageStateConfiguration<TOutboxMessageState> : IEntityTypeConfiguration<TOutboxMessageState>
         where TOutboxMessageState : class, IOutboxMessageState, new()
     {
@@ -57,22 +49,4 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
                     }));
         }
     }
-#endif
-
-#if NET48
-    public partial class OutboxMessageStateConfiguration<TOutboxMessageState> : EntityTypeConfiguration<TOutboxMessageState>
-        where TOutboxMessageState : class, IOutboxMessageState
-    {
-        public OutboxMessageStateConfiguration(string tableName)
-        {
-            ToTable(tableName);
-
-            HasKey(p => p.Id);
-
-            Property(p => p.Code)
-                .IsRequired()
-                .HasMaxLength(OutboxMessageStateConfiguration.CODE_MAX_LENGTH);
-        }
-    }
-#endif
 }

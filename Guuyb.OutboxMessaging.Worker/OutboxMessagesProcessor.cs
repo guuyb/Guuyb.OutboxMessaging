@@ -45,7 +45,8 @@ namespace Guuyb.OutboxMessaging.Worker
             const int takeMessagesNumber = 100;
             var messages = await _outboxMessageDbSet
                 .Where(m => m.StateId == OutboxMessageStateEnum.New)
-                .OrderBy(m => m.CreateDate)
+                .Where(m => m.DelayUntil == null || m.DelayUntil <= DateTime.UtcNow)
+                .OrderBy(m => m.CreatedAt)
                 .Take(takeMessagesNumber)
                 .ToListAsync();
 
@@ -68,7 +69,7 @@ namespace Guuyb.OutboxMessaging.Worker
                     properties.DeliveryMode = MessageDeliveryMode.Persistent;
                     properties.Type = message.PayloadTypeName;
                     properties.ContentType = "application/json";
-                    properties.Headers.Add("CreateDate", message.CreateDate.ToString("O", CultureInfo.InvariantCulture));
+                    properties.Headers.Add("CreatedAt", message.CreatedAt.ToString("O", CultureInfo.InvariantCulture));
                     properties.Headers.Add("ParentActivityId", message.ParentActivityId);
 
                     if (message.TargetQueueName != null)
@@ -113,7 +114,7 @@ namespace Guuyb.OutboxMessaging.Worker
                     }
 
                     message.StateId = OutboxMessageStateEnum.Published;
-                    message.PublishDate = DateTime.UtcNow;
+                    message.PublishedAt = DateTime.UtcNow;
                 }
                 catch (BrokerUnreachableException)
                 {

@@ -8,21 +8,12 @@
 ```
 public class OutboxMessage : IOutboxMessage
 {
-    public DateTime CreateDate { get; set; }
-    public int Id { get; set; }
-    public byte[] Payload { get; set; }
-    public string PayloadTypeName { get; set; }
-    public int PublishAttemptCount { get; set; }
-    public DateTime? PublishDate { get; set; }
-    public OutboxMessageStateEnum StateId { get; set; }
-    public string StringifiedPayload { get; set; }
-    public string TargetQueueName { get; set; }
+    // IOutboxMessage implementation
 }
 
 public class OutboxMessageState : IOutboxMessageState
 {
-    public OutboxMessageStateEnum Id { get; set; }
-    public string Code { get; set; }
+    // IOutboxMessageState implementation
 }
 ```
 
@@ -30,7 +21,7 @@ public class OutboxMessageState : IOutboxMessageState
 ```
 public class SomeDbContext : DbContext
 {
-    ...
+    // ...
 
     #region OutboxMessaging
     public virtual DbSet<OutboxMessage> OutboxMessages { get; set; }

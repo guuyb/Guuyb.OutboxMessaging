@@ -1,16 +1,9 @@
-﻿#if NET6_0 || NETCOREAPP3_1
+﻿using Guuyb.OutboxMessaging.Data.Models;
 using Microsoft.EntityFrameworkCore;
-#endif
-
-#if NET48
-using System.Data.Entity;
-# endif
-
-using Guuyb.OutboxMessaging.Data.Models;
 using Newtonsoft.Json;
 using System;
-using System.Text;
 using System.Diagnostics;
+using System.Text;
 
 namespace Guuyb.OutboxMessaging.Data
 {
@@ -70,17 +63,15 @@ namespace Guuyb.OutboxMessaging.Data
 
             outboxMessages.Add(new TOutboxMessage
             {
-                CreateDate = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
                 Payload = adjustedEncoding.GetBytes(serializedPayload),
-                StringifiedPayload = serializedPayload,
                 PayloadTypeName = optionals.SpecificTypeName ?? payload.GetType().Name,
                 StateId = OutboxMessageStateEnum.New,
                 TargetQueueName = targetQueueName,
                 PublishAttemptCount = 0,
                 RoutingKey = optionals.RoutingKey,
-#if NET6_0 || NETCOREAPP3_1
-                ParentActivityId = Activity.Current?.Id
-#endif
+                ParentActivityId = Activity.Current?.Id,
+                DelayUntil = optionals.DelayUntil,
             });
         }
 
@@ -89,6 +80,7 @@ namespace Guuyb.OutboxMessaging.Data
             public string RoutingKey { get; set; }
             public string SpecificTypeName { get; set; }
             public Encoding Encoding { get; set; }
+            public DateTime? DelayUntil { get; set; }
         }
     }
 }

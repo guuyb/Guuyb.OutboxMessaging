@@ -1,17 +1,8 @@
-﻿#if NET6_0 || NETCOREAPP3_1
+﻿using Guuyb.OutboxMessaging.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Linq.Expressions;
-#endif
-
-#if NET48
-using System;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq.Expressions;
-#endif
-
-using Guuyb.OutboxMessaging.Data.Models;
 
 namespace Guuyb.OutboxMessaging.Data.Configurations
 {
@@ -26,7 +17,6 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
         public const int PARENT_ACTIVITY_ID_MAX_LENGTH = 2048;
     }
 
-#if NET6_0 || NETCOREAPP3_1
     public class RelationlessOutboxMessageConfiguration<TOutboxMessage> : IEntityTypeConfiguration<TOutboxMessage>
         where TOutboxMessage : class, IOutboxMessage
     {
@@ -43,23 +33,20 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
 
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.CreateDate)
+            builder.Property(p => p.CreatedAt)
                 .HasConversion(
-                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                    v => v.ToUniversalTime(),
                     v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
 
             builder.Property(p => p.StateId)
                 .HasConversion<int>();
 
-            builder.Property(p => p.PublishDate)
+            builder.Property(p => p.PublishedAt)
                 .HasConversion(
-                    v => v != null ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : (DateTime?)null,
+                    v => v != null ? v.Value.ToUniversalTime() : (DateTime?)null,
                     v => v != null ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : (DateTime?)null);
 
             builder.Property(p => p.Payload)
-                .IsRequired();
-
-            builder.Property(p => p.StringifiedPayload)
                 .IsRequired();
 
             builder.Property(p => p.PayloadTypeName)
@@ -77,6 +64,11 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
             builder.Property(p => p.ParentActivityId)
                 .IsRequired(false)
                 .HasMaxLength(OutboxMessageConfiguration.PARENT_ACTIVITY_ID_MAX_LENGTH);
+
+            builder.Property(p => p.DelayUntil)
+                .HasConversion(
+                    v => v != null ? v.Value.ToUniversalTime() : (DateTime?)null,
+                    v => v != null ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : null);
         }
     }
 
@@ -105,99 +97,4 @@ namespace Guuyb.OutboxMessaging.Data.Configurations
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }
-#endif
-
-#if NET48
-    /// <summary>
-    /// Кофигурация для OutboxMessage (без связи с OutboxMessageState)
-    /// </summary>
-    /// <remarks>MsSql compatible</remarks>
-    public class RelationlessOutboxMessageConfiguration<TOutboxMessage> : EntityTypeConfiguration<TOutboxMessage>
-        where TOutboxMessage : class, IOutboxMessage
-    {
-        public RelationlessOutboxMessageConfiguration(string tableName)
-        {
-            ToTable(tableName);
-
-            HasKey(p => p.Id);
-
-            Property(p => p.CreateDate)
-                .HasColumnType("datetime2")
-                .HasPrecision(0);
-
-            Property(p => p.PublishDate)
-                .HasColumnType("datetime2")
-                .HasPrecision(0);
-
-            Property(p => p.Payload)
-                .IsRequired()
-                .HasColumnType("varbinary(max)");
-
-            Property(p => p.StringifiedPayload)
-                .IsRequired()
-                .HasColumnType("nvarchar(max)");
-
-            Property(p => p.PayloadTypeName)
-                .IsRequired()
-                .HasMaxLength(OutboxMessageConfiguration.PAYLOAD_TYPE_NAME_MAX_LENGTH);
-
-            Property(p => p.TargetQueueName)
-                .HasMaxLength(OutboxMessageConfiguration.TARGET_QUEUE_NAME_MAX_LENGTH);
-
-            Property(p => p.RoutingKey)
-                .HasMaxLength(OutboxMessageConfiguration.ROUTING_KEY_MAX_LENGTH);
-        }
-    }
-
-    /// <summary>
-    /// Кофигурация для OutboxMessage
-    /// </summary>
-    /// <remarks>Db independent</remarks>
-    public class OutboxMessageConfiguration<TOutboxMessage, TOutboxMessageState> : EntityTypeConfiguration<TOutboxMessage>
-        where TOutboxMessage : class, IOutboxMessage
-        where TOutboxMessageState : class, IOutboxMessageState
-    {
-        public OutboxMessageConfiguration(string tableName,
-            Expression<Func<TOutboxMessage, TOutboxMessageState>> stateNavigation)
-        {
-            if (stateNavigation is null)
-            {
-                throw new ArgumentNullException(nameof(stateNavigation));
-            }
-
-            ToTable(tableName);
-
-            HasKey(p => p.Id);
-
-            Property(p => p.CreateDate)
-                .HasPrecision(0);
-
-            Property(p => p.PublishDate)
-                .HasPrecision(0);
-
-            Property(p => p.StateId)
-                .IsRequired();
-
-            HasRequired(stateNavigation)
-                .WithMany()
-                .WillCascadeOnDelete(false);
-
-            Property(p => p.Payload)
-                .IsRequired();
-
-            Property(p => p.StringifiedPayload)
-                .IsRequired();
-
-            Property(p => p.PayloadTypeName)
-                .IsRequired()
-                .HasMaxLength(OutboxMessageConfiguration.PAYLOAD_TYPE_NAME_MAX_LENGTH);
-
-            Property(p => p.TargetQueueName)
-                .HasMaxLength(OutboxMessageConfiguration.TARGET_QUEUE_NAME_MAX_LENGTH);
-
-            Property(p => p.RoutingKey)
-                .HasMaxLength(OutboxMessageConfiguration.ROUTING_KEY_MAX_LENGTH);
-        }
-    }
-#endif
 }
